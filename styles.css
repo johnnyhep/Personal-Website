@@ -1,0 +1,589 @@
+/* ==========================================================================
+   John Hepworth — Portfolio site styles
+
+   Concept: scrolling the page reads as descending through water, from a
+   bright surface (hero) down to a dark abyss (contact). Section backgrounds
+   step through the --depth-* palette below to sell that illusion, so when
+   editing section order or adding a section, keep the depth chain unbroken
+   (see "Section gradients" further down).
+   ========================================================================== */
+
+/* ---------- Design tokens ---------- */
+:root {
+  /* Ocean depth palette, light (surface) to dark (abyss).
+     Each section's background gradient runs from one depth to the next,
+     so depth-N's color must be the start of the section that follows the
+     section ending on depth-N. Re-chain every gradient below if you
+     reorder or insert a section. */
+  --depth-0: #fcfeff;
+  --depth-1: #dcf1f7;
+  --depth-2: #a9d9ea;
+  --depth-3: #4fa8c9;
+  --depth-4: #1f6f95;
+  --depth-5: #123a54;
+  --depth-6: #081f30;
+  --depth-7: #020608;
+
+  --ink-dark: #0a2540;
+  --ink-light: #f4fbfd;
+
+  /* Themeable per-section tokens. Dark sections below override --fg,
+     --fg-muted, --border, and --bg-solid locally so shared components
+     (buttons, cards, links) stay legible without a light/dark class
+     system. --bg-solid exists specifically so .btn-primary can use the
+     section's own background as its text color. */
+  --bg-solid: var(--depth-0);
+  --fg: var(--ink-dark);
+  --fg-muted: #425466;
+  --border: #e3e8ee;
+
+  --amber-500: #e8a33d;
+}
+
+/* ---------- Base / reset ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--depth-0);
+}
+
+body {
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  font-family: inherit;
+}
+
+h1, h2, h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin: 0;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--depth-0);
+}
+
+.nav {
+  position: relative;
+  z-index: 2; /* content layer, above the decorative waves (z-index: 1) */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px clamp(20px, 5vw, 64px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 1.25rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: var(--fg-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  color: var(--fg);
+}
+
+.btn-outline {
+  border: 1px solid var(--fg);
+  color: var(--fg);
+  padding: 8px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+.btn-outline:hover,
+.btn-outline:focus-visible {
+  background: color-mix(in srgb, var(--fg) 8%, transparent);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 22px;
+  padding: 0 24px 150px;
+}
+
+/* Staggered fade/rise-in for the hero's direct children on page load. */
+.hero-content > * {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: rise-in 0.8s ease forwards;
+}
+
+.hero-content > *:nth-child(1) { animation-delay: 0.05s; }
+.hero-content > *:nth-child(2) { animation-delay: 0.18s; }
+.hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+.hero-content > *:nth-child(4) { animation-delay: 0.42s; }
+
+h1 {
+  font-size: clamp(2.75rem, 6vw, 4.5rem);
+  line-height: 1.05;
+}
+
+.subhead {
+  margin: 0;
+  max-width: 40ch;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+.cta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 6px;
+}
+
+.btn-primary {
+  /* Text color is the section's own background (--bg-solid), so this
+     button stays legible against every depth tier it's placed on. */
+  background: var(--fg);
+  color: var(--bg-solid);
+  font-weight: 500;
+  padding: 14px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  filter: brightness(0.9);
+  transform: translateY(-1px);
+}
+
+.btn-text {
+  color: var(--fg);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+  transition: border-color 0.2s ease;
+}
+
+.btn-text:hover,
+.btn-text:focus-visible {
+  border-color: var(--fg);
+}
+
+a:focus-visible,
+.btn-primary:focus-visible,
+.btn-outline:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
+}
+
+/* ---------- Waves ----------
+   .wave-region clips a 200px strip at the bottom of the hero holding four
+   .wave-track layers (back2, back, mid, front). Each track is 200% wide
+   and repeats the SAME svg wave twice back-to-back; the wave-scroll /
+   wave-scroll-rev keyframes translate the track by exactly -50%, which
+   lines the second copy up with where the first started for a seamless
+   loop. If you edit a wave's path, edit BOTH svg copies in that track or
+   the loop will visibly jump on each cycle.
+
+   Parallax comes from each track's own duration, opacity, and direction
+   (back layers scroll one way, mid/front scroll the other). */
+.wave-region {
+  position: absolute;
+  z-index: 1; /* decorative layer, below nav/content (z-index: 2) */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 200px;
+  overflow: hidden;
+}
+
+.wave-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  width: 200%;
+}
+
+.wave-track svg {
+  width: 50%;
+  height: 100%;
+  flex-shrink: 0;
+  display: block;
+}
+
+.wave-back2 {
+  top: -18px;
+  height: 100%;
+  opacity: 0.42;
+  z-index: 1;
+  animation: wave-scroll 34s linear infinite;
+}
+
+.wave-back2 path { fill: var(--depth-2); }
+
+.wave-back {
+  top: 0;
+  height: 100%;
+  opacity: 0.65;
+  z-index: 2;
+  animation: wave-scroll 24s linear infinite;
+}
+
+.wave-back path { fill: var(--depth-2); }
+
+.wave-mid {
+  top: 6px;
+  height: 100%;
+  opacity: 0.8;
+  z-index: 3;
+  animation: wave-scroll-rev 19s linear infinite;
+}
+
+.wave-mid path { fill: var(--depth-2); }
+
+.wave-front {
+  top: 0;
+  height: 100%;
+  z-index: 5;
+  animation: wave-scroll-rev 16s linear infinite;
+}
+
+.wave-front path { fill: var(--depth-1); }
+
+.wave-edge {
+  fill: none;
+  stroke: var(--depth-3);
+  stroke-width: 1.25;
+  opacity: 0.22;
+}
+
+.scroll-cue {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 190px;
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+  animation: cue-bounce 2.2s ease-in-out infinite;
+}
+
+.scroll-cue svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--fg-muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- Bubbles ----------
+   .bubble elements are hand-placed via inline styles in the markup (top,
+   left, size, animation-duration/delay); this class only supplies the
+   shared shape and the bubble-rise keyframes. .underwater is just the
+   positioned container the .bubbles overlay spans. */
+.underwater {
+  position: relative;
+}
+
+.bubbles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  animation: bubble-rise linear infinite;
+}
+
+/* ---------- Sparks (deep water) ----------
+   Same pattern as bubbles above, but amber twinkles for the darker,
+   deep-water sections. */
+.deep-water {
+  position: relative;
+}
+
+.sparks {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.spark {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--amber-500);
+  box-shadow: 0 0 6px 1px rgba(232, 163, 61, 0.65);
+  animation: spark-twinkle ease-in-out infinite;
+}
+
+/* ---------- Shared section layout ---------- */
+.section {
+  position: relative;
+  padding: 140px 24px;
+}
+
+.section-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.section h2 {
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+  line-height: 1.1;
+}
+
+/* ---------- About / Making prose ---------- */
+.about p,
+.making p {
+  margin: 20px auto 0;
+  max-width: 62ch;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--fg-muted);
+}
+
+/* ---------- About ----------
+   Section gradients: each section runs var(--depth-N) -> var(--depth-N+1)
+   and must end on the color the NEXT section starts on, or a seam shows
+   at the boundary. Current chain: hero(0) -> about(1->2) -> skills(2->3)
+   -> projects(3->4) -> making(4->5) -> contact(5->6). */
+.about {
+  background: linear-gradient(180deg, var(--depth-1), var(--depth-2));
+  --bg-solid: var(--depth-1);
+}
+
+/* ---------- Skills ---------- */
+.skills {
+  background: linear-gradient(180deg, var(--depth-2), var(--depth-3));
+  --bg-solid: var(--depth-3);
+}
+
+.skills-list {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px 32px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--fg);
+}
+
+/* ---------- Projects ----------
+   First dark section: switches --fg/--fg-muted/--border to light-on-dark
+   values so text and borders stay readable against the deeper palette. */
+.projects {
+  background: linear-gradient(180deg, var(--depth-3), var(--depth-4));
+  --bg-solid: var(--depth-3);
+  --fg: var(--ink-light);
+  --fg-muted: rgba(244, 251, 253, 0.8);
+  --border: rgba(244, 251, 253, 0.4);
+  padding-bottom: 200px;
+}
+
+.projects .section-inner {
+  max-width: 1080px;
+}
+
+.projects-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  text-align: left;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 28px;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+}
+
+.card p {
+  margin: 12px 0 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+/* ---------- Making ---------- */
+.making {
+  background: linear-gradient(180deg, var(--depth-4), var(--depth-5));
+  --bg-solid: var(--depth-5);
+  --fg: var(--ink-light);
+  --fg-muted: rgba(244, 251, 253, 0.72);
+  --border: rgba(244, 251, 253, 0.18);
+}
+
+/* ---------- Contact ---------- */
+.contact-section {
+  background: linear-gradient(180deg, var(--depth-5), var(--depth-6));
+  --bg-solid: var(--depth-6);
+  --fg: var(--ink-light);
+  --fg-muted: rgba(244, 251, 253, 0.7);
+  --border: rgba(244, 251, 253, 0.18);
+  padding: 160px 24px 100px;
+}
+
+.contact-section p {
+  margin: 20px auto 0;
+  max-width: 50ch;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+.contact-section .btn-primary {
+  margin-top: 32px;
+}
+
+.footer-meta {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+
+.footer-meta a {
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-meta a:hover,
+.footer-meta a:focus-visible {
+  color: var(--fg);
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes rise-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes wave-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes wave-scroll-rev {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes cue-bounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, 8px); }
+}
+
+@keyframes bubble-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  15% { opacity: 0.65; }
+  85% { opacity: 0.45; }
+  100% { transform: translateY(-70px) scale(0.85); opacity: 0; }
+}
+
+@keyframes spark-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 0.85; transform: scale(1); }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .nav-links { display: none; } /* no mobile menu — links just disappear */
+  .hero-content { padding: 0 20px 170px; gap: 18px; }
+  .wave-region { height: 150px; }
+  .scroll-cue { bottom: 140px; }
+  .section { padding: 100px 20px; }
+  .projects { padding-bottom: 160px; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .contact-section { padding: 120px 20px 80px; }
+  .footer-meta { margin-top: 72px; }
+}
+
+/* ---------- Reduced motion ----------
+   Disables animation by naming every animated selector explicitly. Any
+   new animated element (wave layer, particle, etc.) must be added to
+   this list, or it will keep moving for users who opted out. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .wave-back2,
+  .wave-back,
+  .wave-mid,
+  .wave-front,
+  .scroll-cue,
+  .bubble,
+  .spark,
+  .hero-content > * {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+  .bubble { opacity: 0.35 !important; }
+  .spark { opacity: 0.5 !important; }
+}

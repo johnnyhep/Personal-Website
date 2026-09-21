@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>John Hepworth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ===========================================================
+       Hero — bright "surface" section with nav, headline/CTA, and
+       an animated wave strip pinned to the bottom (see .wave-region
+       in styles.css for how the seamless loop works).
+       =========================================================== -->
+  <div class="hero" id="home">
+    <nav class="nav">
+      <div class="logo">JH</div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+      </ul>
+      <a class="btn-outline" href="#contact">Contact me</a>
+    </nav>
+
+    <div class="hero-content">
+      <h1>Howdy, I'm John.</h1>
+      <p class="subhead">I build AI automation tools for small businesses — from first sketch to shipped product.</p>
+      <div class="cta-row">
+        <a class="btn-primary" href="#contact">Contact me</a>
+        <a class="btn-text" href="#projects">See my projects</a>
+      </div>
+    </div>
+
+    <!-- Four parallax wave layers (back2, back, mid, front), each an
+         svg wave repeated twice inside a 200%-wide track so the
+         wave-scroll animation loops seamlessly. -->
+    <div class="wave-region" aria-hidden="true">
+      <div class="wave-track wave-back2">
+        <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+          <path d="M0,95 C160,120 320,70 480,95 C640,120 800,70 960,95 C1120,120 1280,70 1440,95 L1440,200 L0,200 Z" />
+          <path class="wave-edge" d="M0,95 C160,120 320,70 480,95 C640,120 800,70 960,95 C1120,120 1280,70 1440,95" />
+        </svg>
+        <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+          <path d="M0,95 C160,120 320,70 480,95 C640,120 800,70 960,95 C1120,120 1280,70 1440,95 L1440,200 L0,200 Z" />
+          <path class="wave-edge" d="M0,95 C160,120 320,70 480,95 C640,120 800,70 960,95 C1120,120 1280,70 1440,95" />
+        </svg>
+      </div>
+      <div class="wave-track wave-back">
+        <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+          <path d="M0,110 C120,130 240,90 360,110 C480,130 600,90 720,110 C840,130 960,90 1080,110 C1200,130 1320,90 1440,110 L1440,200 L0,200 Z" />
+          <path class="wave-edge" d="M0,110 C120,130 240,90 360,110 C480,130 600,90 720,110 C840,130 960,90 1080,110 C1200,130 1320,90 1440,110" />
+        </svg>
+        <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+          <path d="M0,110 C120,130 240,90 360,110 C480,130 600,90 720,110 C840,130 960,90 1080,110 C1200,130 1320,90 1440,110 L1440,200 L0,200 Z" />
+          <path class="wave-edge" d="M0,110 C120,130 240,90 360,110 C480,130 600,90 720,110 C840,130 960,90 1080,110 C1200,130 1320,90 1440,110" />
+        </svg>
+      </div>
+      <div class="wave-track wave-mid">
+        <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+          <path d="M0,115 C96,145 192,85 288,115 C384,145 480,85 576,115 C672,145 768,85 864,115 C960,145 1056,85 1152,115 C1248,145 1344,85 1440,115 L1440,200 L0,200 Z" />
+          <path class="wave-edge" d="M0,115 C96,145 192,85 288,115 C384,145 480,85 576,115 C672,145 768,85 864,115 C960,145 1056,85 1152,115 C1248,145 1344,85 1440,115" />
+        </svg>
+        <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+          <path d="M0,115 C96,145 192,85 288,115 C384,145 480,85 576,115 C672,145 768,85 864,115 C960,145 1056,85 1152,115 C1248,145 1344,85 1440,115 L1440,200 L0,200 Z" />
+          <path class="wave-edge" d="M0,115 C96,145 192,85 288,115 C384,145 480,85 576,115 C672,145 768,85 864,115 C960,145 1056,85 1152,115 C1248,145 1344,85 1440,115" />
+        </svg>
+      </div>
+      <div class="wave-track wave-front">
+        <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+          <path d="M0,130 C160,70 320,190 480,130 C640,70 800,190 960,130 C1120,70 1280,190 1440,130 L1440,200 L0,200 Z" />
+          <path class="wave-edge" d="M0,130 C160,70 320,190 480,130 C640,70 800,190 960,130 C1120,70 1280,190 1440,130" />
+        </svg>
+        <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+          <path d="M0,130 C160,70 320,190 480,130 C640,70 800,190 960,130 C1120,70 1280,190 1440,130 L1440,200 L0,200 Z" />
+          <path class="wave-edge" d="M0,130 C160,70 320,190 480,130 C640,70 800,190 960,130 C1120,70 1280,190 1440,130" />
+        </svg>
+      </div>
+    </div>
+
+    <div class="scroll-cue">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7" /></svg>
+    </div>
+  </div>
+
+  <!-- ===========================================================
+       Underwater — About + Skills, with a rising-bubble overlay.
+       Bubble position/size/timing is set inline per-span; see the
+       .bubble rule in styles.css for the shared shape/animation.
+       =========================================================== -->
+  <div class="underwater">
+    <div class="bubbles" aria-hidden="true">
+      <span class="bubble" style="top:8%; left:15%; width:10px; height:10px; animation-duration:8s; animation-delay:0s;"></span>
+      <span class="bubble" style="top:20%; left:70%; width:7px; height:7px; animation-duration:6.5s; animation-delay:1.2s;"></span>
+      <span class="bubble" style="top:32%; left:35%; width:13px; height:13px; animation-duration:10s; animation-delay:2.5s;"></span>
+      <span class="bubble" style="top:45%; left:85%; width:8px; height:8px; animation-duration:7s; animation-delay:0.6s;"></span>
+      <span class="bubble" style="top:55%; left:10%; width:11px; height:11px; animation-duration:9s; animation-delay:3.1s;"></span>
+      <span class="bubble" style="top:63%; left:55%; width:6px; height:6px; animation-duration:6s; animation-delay:1.8s;"></span>
+      <span class="bubble" style="top:74%; left:25%; width:14px; height:14px; animation-duration:11s; animation-delay:4.4s;"></span>
+      <span class="bubble" style="top:80%; left:78%; width:9px; height:9px; animation-duration:8.5s; animation-delay:2.9s;"></span>
+      <span class="bubble" style="top:90%; left:45%; width:7px; height:7px; animation-duration:7.5s; animation-delay:0.2s;"></span>
+      <span class="bubble" style="top:95%; left:65%; width:12px; height:12px; animation-duration:9.5s; animation-delay:5s;"></span>
+    </div>
+
+    <section class="section about" id="about">
+      <div class="section-inner">
+        <h2>A bit about me</h2>
+        <p>I'm a self-taught builder — Python, web development, 3D modeling, soldering, whatever the project needs. Right now that means building AI automation tools for small businesses around Hamilton County, running a car detailing business with my brother, and doing renovation work on the side. This fall I'm headed to Pensacola Christian College.</p>
+      </div>
+    </section>
+
+    <section class="section skills" id="skills">
+      <div class="section-inner">
+        <h2>What I work with</h2>
+        <div class="skills-list">
+          <span>Python</span>
+          <span>Web Development</span>
+          <span>3D Modeling &amp; Printing</span>
+          <span>Electronics &amp; Soldering</span>
+          <span>AI Automation</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===========================================================
+       Projects — first dark section; styles.css flips --fg/--border
+       to their light-on-dark values here (see .projects).
+       =========================================================== -->
+  <section class="section projects" id="projects">
+    <div class="section-inner">
+      <h2>What I'm building</h2>
+    </div>
+    <div class="section-inner">
+      <div class="projects-grid">
+        <div class="card">
+          <h3>AI automation</h3>
+          <p>Workflow and AI automation tools for brick-and-mortar businesses in the Noblesville area — software that saves an afternoon of manual work every week.</p>
+        </div>
+        <div class="card">
+          <h3>Hepworth Bros Car Detailing</h3>
+          <p>Co-founded with my brother in 2022. We detail cars around Hamilton County, start to finish.</p>
+        </div>
+        <div class="card">
+          <h3>Hepworth Homes</h3>
+          <p>Residential renovation work — tearing out, building back, and everything in between.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================================================
+       Deep water — Making + Contact, with an amber-spark overlay
+       (same inline-position pattern as the bubbles above).
+       =========================================================== -->
+  <div class="deep-water">
+    <div class="sparks" aria-hidden="true">
+      <span class="spark" style="top:10%; left:20%; width:3px; height:3px; animation-duration:4s; animation-delay:0s;"></span>
+      <span class="spark" style="top:18%; left:65%; width:2px; height:2px; animation-duration:5s; animation-delay:1.5s;"></span>
+      <span class="spark" style="top:28%; left:40%; width:4px; height:4px; animation-duration:3.5s; animation-delay:2.8s;"></span>
+      <span class="spark" style="top:38%; left:80%; width:2px; height:2px; animation-duration:6s; animation-delay:0.7s;"></span>
+      <span class="spark" style="top:47%; left:12%; width:3px; height:3px; animation-duration:4.5s; animation-delay:3.6s;"></span>
+      <span class="spark" style="top:55%; left:55%; width:2px; height:2px; animation-duration:5.5s; animation-delay:1.1s;"></span>
+      <span class="spark" style="top:64%; left:30%; width:3px; height:3px; animation-duration:4s; animation-delay:2.2s;"></span>
+      <span class="spark" style="top:72%; left:70%; width:4px; height:4px; animation-duration:3.8s; animation-delay:4.5s;"></span>
+      <span class="spark" style="top:82%; left:18%; width:2px; height:2px; animation-duration:5s; animation-delay:0.3s;"></span>
+      <span class="spark" style="top:90%; left:60%; width:3px; height:3px; animation-duration:4.8s; animation-delay:2.9s;"></span>
+    </div>
+
+    <section class="section making" id="making">
+      <div class="section-inner">
+        <h2>Side builds</h2>
+        <p>When I'm not working with clients, I'm usually modeling something in Blender or soldering together a small tool. I've designed a set of 3D-printable clog charms for a Printables contest, built a script that automatically sorts my downloads folder, and written FeatureScript automation that generates closet labels in Onshape.</p>
+      </div>
+    </section>
+
+    <footer class="section contact-section" id="contact">
+      <div class="section-inner">
+        <h2>Let's talk</h2>
+        <p>Have a project in mind? I'd love to hear about it.</p>
+        <a class="btn-primary" href="mailto:hello@johnhepworth.com">Email me</a>
+        <div class="footer-meta">
+          <span>&copy; <span id="year"></span> John Hepworth</span>
+          <a href="#home">Back to top</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
