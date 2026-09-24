@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-A personal portfolio site for John Hepworth, split into three files: `index.html` (markup), `styles.css` (all styling), and `script.js` (the copyright-year fill-in — its only behavior). There is no build step, no package manager, no tests, and no git repo. The only external dependency is Google Fonts (Space Grotesk for headings, Inter for body).
+A personal portfolio site for John Hepworth, split into three files: `index.html` (markup), `styles.css` (all styling), and `script.js` (the copyright-year fill-in and the depth gauge). There is no build step, no package manager, no tests, and no git repo. The only external dependency is Google Fonts (Space Grotesk for headings, Inter for body).
 
 ## Running it
 
@@ -52,13 +52,21 @@ Three clouds sit in the hero (originally sourced from `images/left_cloud.svg`, `
 
 `.sun` is a flat 100px `rgb(252, 240, 191)` circle in the hero's top-right quadrant. Its halo is `.sun::before`, a `radial-gradient` whose opacity follows `ln(x)/x` under the substitution x = e^u, cubed: `(u·e^-u)^3`. Cubing sharpens the peak into a distinct bright ring and steepens the asymptotic exponential tail. u runs linearly from 0.5 at the disc edge (`--halo-start`, from `--sun-r`) to 5 at `--halo-end: 30vmax`. Starting at u = 0.5 (~56% of peak) makes the glow begin abruptly at the disc. The ring's peak opacity is 0.35. The stops are hand-computed, so changing the curve means regenerating them. (A stacked `box-shadow` glow was tried first and never visibly rendered, so it was removed.) Shrunk and repositioned under the 720px breakpoint alongside the other hero decoration.
 
+### Sailboat
+
+`.sailboat-slot` holds a small `<img>` of `images/shadowed_sailboat-web.png` on the horizon (left side of the hero, just above the wave strip), placed before `.wave-region` at the same `z-index: 1` so the back waves paint over its hull. That file is `images/shadowed_sailboat.png` cropped to its alpha bounding box and downscaled to 320×320; regenerate it the same way if the source changes. (`images/sailboat.png` is an older, unused design whose checkerboard is baked into the pixels with no alpha channel.) Distance comes from its small size, `opacity: 0.75`, and `saturate(0.6)` on the slot; the `sailboat-bob` animation lives on the inner img (same slot/inner split as the clouds) and is in the reduced-motion list. Its `bottom` offset is tuned to the back waves' crest line, so changing the wave-region height or the back-wave paths means re-tuning it (desktop and 720px values).
+
 ### Ambient particles
 
 `.bubble` and `.spark` are hand-authored `<span>`s whose `top`, `left`, `width`, `height`, `animation-duration`, and `animation-delay` are all inline styles; the classes supply only the shared shape and keyframes. They live in absolutely-positioned `.bubbles` / `.sparks` overlays. The `.underwater` and `.deep-water` wrapper `<div>`s exist for no reason other than to be the `position: relative` containers those overlays span.
 
+### Depth gauge
+
+`.depth-gauge` is a slim, deliberately unintrusive fixed bar in the bottom-right corner: a faint `--depth-5` pill holding a tiny "Depth" label, a single-color (`--depth-2`) bar, and one small depth readout that rides beside the marker, with no ticks or zone names (markup just before the `<script>` tag, logic in `script.js`). It pops up (`.is-visible`) once the middle of the viewport scrolls below the hero's waterline, estimated as 40% of the way down `.wave-region`, and hides again above it. Depth is linear with scroll: 0 m at the waterline to 6,000 m (`MAX_DEPTH`) when the page is scrolled to the bottom. `script.js` sets `--p` (0–1) on the gauge, and `.dg-marker`, `.dg-readout`, and `.dg-shade` (the dimmed, not-yet-reached part of the bar) read it. It fades in and moves its marker with CSS *transitions*, not animations, so the reduced-motion block disables them with a separate `transition: none` rule.
+
 ### Layering convention
 
-Decorative layers sit at `z-index: 1`; content (`.nav`, `.hero-content`, `.section-inner`) sits at `z-index: 2`. Keep new decoration at 1 and new content at 2.
+Decorative layers sit at `z-index: 1`; content (`.nav`, `.hero-content`, `.section-inner`) sits at `z-index: 2`. Keep new decoration at 1 and new content at 2. The one exception is the fixed `.depth-gauge` overlay at `z-index: 10`, which must sit above every section.
 
 ### Motion and responsive rules
 

@@ -65,11 +65,19 @@
 
     <div class="hero-content">
       <h1>Howdy, I'm John.</h1>
-      <p class="subhead">I build AI automation tools for small businesses — from first sketch to shipped product.</p>
+      <p class="subhead">I'm a sophomore studying mechanical engineering with an interest in aviation.</p>
       <div class="cta-row">
         <a class="btn-primary" href="#contact">Contact me</a>
         <a class="btn-text" href="#projects">See my projects</a>
       </div>
+    </div>
+
+    <!-- Small, hazy sailboat on the horizon for depth. Placed before
+         .wave-region at the same z-index so the waves paint over its
+         hull. Uses a cropped, downscaled copy of
+         images/shadowed_sailboat.png. -->
+    <div class="sailboat-slot" aria-hidden="true">
+      <img class="sailboat" src="images/shadowed_sailboat-web.png" alt="">
     </div>
 
     <!-- Four parallax wave layers (back2, back, mid, front), each an
@@ -225,6 +233,24 @@
         </div>
       </div>
     </footer>
+  </div>
+
+  <!-- Depth gauge: slim fixed bar in the bottom-right corner that fades in
+       once the middle of the viewport drops below the hero's waterline.
+       A small "Depth" label sits above a single-color bar; a marker slides
+       down it with the current depth riding beside it; see script.js for how scroll maps to depth.
+       Purely decorative, so hidden from assistive tech. -->
+  <div class="depth-gauge" aria-hidden="true">
+    <div class="dg-label">Depth</div>
+    <div class="dg-body">
+      <div class="dg-bar">
+        <div class="dg-shade"></div>
+        <div class="dg-marker"></div>
+      </div>
+      <div class="dg-rail">
+        <span class="dg-readout"><span class="dg-value">0</span> m</span>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>

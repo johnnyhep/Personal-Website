@@ -370,6 +370,33 @@ a:focus-visible,
   pointer-events: none;
 }
 
+/* ---------- Sailboat ----------
+   A small boat on the horizon, sitting in the troughs of the back wave
+   layers so they paint over its hull (it's before .wave-region in the
+   markup, same z-index). Small size, reduced opacity, and desaturation
+   read as distance/haze. Opacity and filter live on the positioning
+   .sailboat-slot and the bob animation on the inner img — same split as
+   the clouds — so the reduced-motion override never touches the haze. */
+.sailboat-slot {
+  position: absolute;
+  z-index: 1; /* decorative layer, below nav/content (z-index: 2) */
+  left: 14%;
+  bottom: 110px;
+  width: 64px;
+  aspect-ratio: 1; /* matches images/shadowed_sailboat-web.png (320x320) */
+  opacity: 0.75;
+  filter: saturate(0.6);
+  pointer-events: none;
+}
+
+.sailboat {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 90%;
+  animation: sailboat-bob 7s ease-in-out infinite;
+}
+
 /* ---------- Waves ----------
    .wave-region clips a 200px strip at the bottom of the hero holding four
    .wave-track layers (back2, back, mid, front). Each track is 200% wide
@@ -671,6 +698,113 @@ a:focus-visible,
   color: var(--fg);
 }
 
+/* ---------- Depth gauge ----------
+   Slim fixed bar in the bottom-right corner that fades in once you're
+   "underwater" and tracks depth as you scroll; script.js drives it.
+   Deliberately minimal and low-contrast so it doesn't compete with the
+   page: a faint --depth-5 pill, a tiny "Depth" label, a single-color
+   bar, and one small readout that rides beside the marker. The one
+   element that breaks the z-index 1/2 convention: it's a fixed overlay,
+   so it sits at 10 to stay above every section.
+
+   script.js sets --p (0-1), linear with scroll from the waterline to the
+   bottom of the page; .dg-shade dims the stretch not yet reached. */
+.depth-gauge {
+  --bar-h: 88px;
+  position: fixed;
+  z-index: 10;
+  right: 16px;
+  bottom: 16px;
+  padding: 8px 10px 10px 9px;
+  border-radius: 10px;
+  background: rgba(18, 58, 84, 0.3); /* --depth-5 */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--depth-1);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    visibility 0s linear 0.4s;
+}
+
+.depth-gauge.is-visible {
+  opacity: 0.85;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.dg-label {
+  margin-bottom: 7px;
+  font-size: 0.55rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.dg-body {
+  display: flex;
+  gap: 8px;
+}
+
+.dg-bar {
+  position: relative;
+  width: 4px;
+  height: var(--bar-h);
+  border-radius: 2px;
+  background: var(--depth-2);
+}
+
+.dg-shade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: calc(var(--p, 0) * 100%);
+  border-radius: 0 0 2px 2px;
+  background: rgba(2, 6, 8, 0.5); /* --depth-7 */
+  transition: top 0.25s ease-out;
+}
+
+.dg-marker {
+  position: absolute;
+  left: -2px;
+  width: 8px;
+  height: 2px;
+  margin-top: -1px;
+  top: calc(var(--p, 0) * 100%);
+  border-radius: 1px;
+  background: var(--depth-0);
+  box-shadow: 0 0 6px rgba(169, 217, 234, 0.8); /* --depth-2 glow */
+  transition: top 0.25s ease-out;
+}
+
+/* Same height as the bar, so the readout can track the marker. */
+.dg-rail {
+  position: relative;
+  width: 3.4em;
+  height: var(--bar-h);
+  font-size: 0.66rem;
+}
+
+.dg-readout {
+  position: absolute;
+  left: 0;
+  top: calc(var(--p, 0) * 100%);
+  transform: translateY(-50%);
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transition: top 0.25s ease-out;
+}
+
 /* ---------- Keyframes ---------- */
 @keyframes rise-in {
   to { opacity: 1; transform: translateY(0); }
@@ -679,6 +813,11 @@ a:focus-visible,
 @keyframes cloud-drift {
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(var(--drift, 12px)); }
+}
+
+@keyframes sailboat-bob {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50% { transform: translateY(2px) rotate(1.5deg); }
 }
 
 @keyframes wave-scroll {
@@ -713,6 +852,8 @@ a:focus-visible,
   .nav-links { display: none; } /* no mobile menu — links just disappear */
   .hero-content { padding: 0 20px 170px; gap: 18px; }
   .cloud-slot--middle { display: none; } /* too close to the headline once it wraps */
+  .depth-gauge { --bar-h: 72px; right: 12px; bottom: 12px; }
+  .sailboat-slot { left: 10%; bottom: 82px; width: 46px; }
   .sun { top: 8%; right: 11%; width: 64px; height: 64px; --sun-r: 32px; }
   .wave-region { height: 150px; }
   .scroll-cue { bottom: 140px; }
@@ -734,6 +875,7 @@ a:focus-visible,
   .wave-mid,
   .wave-front,
   .cloud,
+  .sailboat,
   .scroll-cue,
   .bubble,
   .spark,
@@ -743,5 +885,11 @@ a:focus-visible,
     transform: none;
   }
   .bubble { opacity: 0.35 !important; }
+  /* The gauge uses transitions, not animations, so it's handled here
+     separately: it still appears and updates, just without motion. */
+  .depth-gauge,
+  .dg-shade,
+  .dg-marker,
+  .dg-readout { transition: none !important; }
   .spark { opacity: 0.5 !important; }
 }
