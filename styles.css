@@ -220,6 +220,156 @@ a:focus-visible,
   outline-offset: 3px;
 }
 
+/* ---------- Clouds ----------
+   Three source SVGs (originally images/left_cloud.svg, middle_cloud.svg,
+   right_cloud.svg) are inlined directly in index.html — NOT referenced
+   via url()/mask-image — because this site is meant to run via a plain
+   "open index.html" (see CLAUDE.md), and several browsers (Safari
+   included) block external resource loads like mask-image under the
+   file:// protocol, which silently makes a masked cloud invisible.
+   Inlining sidesteps that entirely.
+
+   Each SVG ships its own multi-tone near-white fill colors baked into
+   every <path>. `.cloud path` below overrides all of them to one flat
+   rgb(225, 243, 252) fill (a plain CSS rule beats an SVG presentation
+   attribute regardless of specificity), which is what makes all three
+   clouds read as identically colored despite differing source art.
+   That color is intentionally NOT one of the --depth-* tokens — it's
+   cloud-specific, not part of the section-gradient palette those
+   tokens drive.
+
+   Each .cloud-slot pins its cloud within the hero: left flush against
+   the left edge, right flush against the right edge, and middle
+   nudged down-and-right of the left cloud so the two read as a loose
+   cluster. Each cloud then drifts a few pixels side to side on its
+   own slow, offset duration (--drift sets distance, cloud-drift's
+   0%/50%/100% keyframe does the ping-pong so there's no loop seam to
+   maintain, unlike the wave tracks below). The drift animation lives
+   on the inner .cloud <svg>, not the positioning .cloud-slot div, so
+   repositioning a slot never has to account for the drift transform.
+   Negative animation-delays start each cloud mid-cycle so they don't
+   all drift in sync on page load. */
+.clouds {
+  position: absolute;
+  z-index: 1; /* decorative layer, below nav/content (z-index: 2) */
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cloud-slot {
+  position: absolute;
+}
+
+.cloud-slot--left {
+  left: 0;
+  top: 14%;
+}
+
+.cloud-slot--middle {
+  left: clamp(160px, 18vw, 290px);
+  top: 30%;
+}
+
+.cloud-slot--right {
+  right: 0;
+  top: 18%;
+}
+
+.cloud {
+  display: block;
+  opacity: 0.85;
+  animation: cloud-drift ease-in-out infinite;
+}
+
+.cloud path {
+  fill: rgb(225, 243, 252);
+  stroke: rgb(225, 243, 252);
+}
+
+.cloud--left {
+  width: clamp(220px, 26vw, 420px);
+  aspect-ratio: 652 / 274;
+  --drift: 16px;
+  animation-duration: 72s;
+}
+
+.cloud--middle {
+  width: clamp(190px, 22vw, 360px);
+  aspect-ratio: 390 / 158;
+  --drift: -12px;
+  animation-duration: 54s;
+  animation-delay: -18s;
+}
+
+.cloud--right {
+  width: clamp(170px, 19vw, 300px);
+  aspect-ratio: 332 / 150;
+  --drift: 14px;
+  animation-duration: 62s;
+  animation-delay: -34s;
+}
+
+/* ---------- Sun ----------
+   A flat 100px circle in the hero's top-right quadrant, with a single
+   ln(x)/x-shaped halo on .sun::before. */
+.sun {
+  position: absolute;
+  z-index: 1; /* decorative layer, below nav/content (z-index: 2) */
+  top: 18%;
+  right: 22%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgb(252, 240, 191);
+  --sun-r: 50px; /* disc radius; the halo's start is measured from it */
+  pointer-events: none;
+}
+
+/* Halo: a radial gradient whose opacity follows y = ln(x)/x under the
+   substitution x = e^u (giving u * e^-u), then cubed: y = (u * e^-u)^3.
+   Cubing keeps the rise-to-a-peak shape but sharpens the peak into a
+   distinct bright ring and steepens the exponential tail, which still
+   approaches 0 asymptotically. u runs linearly from 0.5 at the disc edge
+   (--halo-start) to 5 at --halo-end; starting at u = 0.5 (~56% of peak)
+   makes the glow begin abruptly at the disc. Opacity is scaled so the
+   ring's peak (u = 1, x = e) is 0.35; by u = 5 it's ~0.0003, so the final
+   0 stop leaves no visible edge. Stops are hand-computed; changing the
+   curve means regenerating them. */
+.sun::before {
+  --halo-start: var(--sun-r);
+  --halo-end: 30vmax;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--halo-end) * 2);
+  height: calc(var(--halo-end) * 2);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle closest-side,
+    rgba(252, 240, 191, 0.196) var(--halo-start),
+    rgba(252, 240, 191, 0.275) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.03333),
+    rgba(252, 240, 191, 0.326) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.06667),
+    rgba(252, 240, 191, 0.35) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.1111),
+    rgba(252, 240, 191, 0.332) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.1556),
+    rgba(252, 240, 191, 0.29) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.2),
+    rgba(252, 240, 191, 0.237) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.2444),
+    rgba(252, 240, 191, 0.185) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.2889),
+    rgba(252, 240, 191, 0.139) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.3333),
+    rgba(252, 240, 191, 0.094) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.3889),
+    rgba(252, 240, 191, 0.06) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.4444),
+    rgba(252, 240, 191, 0.038) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.5),
+    rgba(252, 240, 191, 0.024) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.5556),
+    rgba(252, 240, 191, 0.008) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.6667),
+    rgba(252, 240, 191, 0.003) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.7778),
+    rgba(252, 240, 191, 0.001) calc(var(--halo-start) + (var(--halo-end) - var(--halo-start)) * 0.8889),
+    rgba(252, 240, 191, 0) var(--halo-end),
+    rgba(252, 240, 191, 0) var(--halo-end)
+  );
+  pointer-events: none;
+}
+
 /* ---------- Waves ----------
    .wave-region clips a 200px strip at the bottom of the hero holding four
    .wave-track layers (back2, back, mid, front). Each track is 200% wide
@@ -526,6 +676,11 @@ a:focus-visible,
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes cloud-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(var(--drift, 12px)); }
+}
+
 @keyframes wave-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -557,6 +712,8 @@ a:focus-visible,
 @media (max-width: 720px) {
   .nav-links { display: none; } /* no mobile menu — links just disappear */
   .hero-content { padding: 0 20px 170px; gap: 18px; }
+  .cloud-slot--middle { display: none; } /* too close to the headline once it wraps */
+  .sun { top: 8%; right: 11%; width: 64px; height: 64px; --sun-r: 32px; }
   .wave-region { height: 150px; }
   .scroll-cue { bottom: 140px; }
   .section { padding: 100px 20px; }
@@ -576,6 +733,7 @@ a:focus-visible,
   .wave-back,
   .wave-mid,
   .wave-front,
+  .cloud,
   .scroll-cue,
   .bubble,
   .spark,
