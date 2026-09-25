@@ -382,7 +382,7 @@ a:focus-visible,
   z-index: 1; /* decorative layer, below nav/content (z-index: 2) */
   left: 14%;
   bottom: 110px;
-  width: 64px;
+  width: 80px;
   aspect-ratio: 1; /* matches images/shadowed_sailboat-web.png (320x320) */
   opacity: 0.75;
   filter: saturate(0.6);
@@ -624,7 +624,7 @@ a:focus-visible,
 .projects-grid {
   margin-top: 56px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
   text-align: left;
 }
@@ -853,7 +853,7 @@ a:focus-visible,
   .hero-content { padding: 0 20px 170px; gap: 18px; }
   .cloud-slot--middle { display: none; } /* too close to the headline once it wraps */
   .depth-gauge { --bar-h: 72px; right: 12px; bottom: 12px; }
-  .sailboat-slot { left: 10%; bottom: 82px; width: 46px; }
+  .sailboat-slot { left: 10%; bottom: 82px; width: 58px; }
   .sun { top: 8%; right: 11%; width: 64px; height: 64px; --sun-r: 32px; }
   .wave-region { height: 150px; }
   .scroll-cue { bottom: 140px; }
